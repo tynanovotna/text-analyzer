@@ -15,7 +15,8 @@ registred_users = {
     "ann": "pass123",
     "mike": "password123",
     "lizz": "pass123"
-}
+    }
+
 username = input("username: ").lower()
 password = input("password: ").lower()
 if username in registred_users.keys() and password in registred_users[username]:
