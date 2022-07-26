@@ -71,6 +71,18 @@ def count_and_sum_numeric_strings(text_number):
             numeric_strings.append(int(word))
     return len(numeric_strings), sum(numeric_strings)
 
+def make_chart():
+    chart_data = occurences(text_number)
+    print(separator)
+    max_len_value = 0
+    for _, value in chart_data:
+        if len(value) > max_len_value:
+            max_len_value = len(value)
+    print("LEN", "|", "OCCURENCES".center(max_len_value), "|", "NR." )
+    print(separator)
+    for key, value in chart_data:
+        print(str(key).rjust(3), "|", len(value) * "*", "|".rjust(max_len_value + 1 - len(value)), len(value))
+    print(separator)
 
 def main(text_number):
     print(f"There are {count_words(text_number)} words in the selected text.")
@@ -78,8 +90,8 @@ def main(text_number):
     print(f"There are {count_uppercase_words(text_number)} uppercase words.")
     print(f"There are {count_lowercase_words(text_number)} lowercase words.")
     print(f"There are {count_and_sum_numeric_strings(text_number)[0]} numeric strings.")
-    print(f"The sum of all the numbers {count_and_sum_numeric_strings(text_number)[1]}.")
-    print(occurences(text_number))    
+    print(f"The sum of all the numbers {count_and_sum_numeric_strings(text_number)[1]}.")   
+    make_chart()
     
 if username in registered_users.keys() and password in registered_users[username]:
     print(separator)
