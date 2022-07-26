@@ -8,17 +8,7 @@ discord: KristýnaN#4503
 
 from task_template import TEXTS
 
-separator = "-" * 40
-new_line = "\n"
-registered_users = {
-    "bob": "123",
-    "ann": "pass123",
-    "mike": "password123",
-    "lizz": "pass123"
-    }
-
-username = input("username: ").lower()
-password = input("password: ").lower()
+SEPARATOR = "-" * 40
 
 def format_text(text_number):
     text_index = int(text_number) - 1
@@ -29,7 +19,7 @@ def count_words(text_number):
     text = format_text(text_number)
     return len(text)
 
-def occurences(n):
+def occurences(text_number):
     text = format_text(text_number)
     number_of_occurences = {}
     for word in text:
@@ -39,29 +29,19 @@ def occurences(n):
             number_of_occurences[len(word)].append(word)
     return sorted(number_of_occurences.items())
 
-def count_titlecase_words(text_number):
+def analyze_text(text_number):
     text = format_text(text_number)
     titlecase_words = []
+    uppercase_words = []
+    lowercase_words = []
     for word in text:
         if word.istitle():
             titlecase_words.append(word)
-    return len(titlecase_words)
-
-def count_uppercase_words(text_number):
-    text = format_text(text_number)
-    uppercase_words = []
-    for word in text:
-        if word.isupper() and word.isalpha():
+        elif word.isupper() and word.isalpha():
             uppercase_words.append(word)
-    return len(uppercase_words)
-
-def count_lowercase_words(text_number):
-    text = format_text(text_number)
-    lowercase_words = []
-    for word in text:
-        if word.islower():
+        elif word.islower():
             lowercase_words.append(word)
-    return len(lowercase_words)
+    return len(titlecase_words), len(uppercase_words), len(lowercase_words)
 
 def count_and_sum_numeric_strings(text_number):
     text = format_text(text_number)
@@ -71,39 +51,47 @@ def count_and_sum_numeric_strings(text_number):
             numeric_strings.append(int(word))
     return len(numeric_strings), sum(numeric_strings)
 
-def make_chart():
+def make_chart(text_number):
     chart_data = occurences(text_number)
-    print(separator)
+    print(SEPARATOR)
     max_len_value = 0
     for _, value in chart_data:
         if len(value) > max_len_value:
             max_len_value = len(value)
     print("LEN", "|", "OCCURENCES".center(max_len_value), "|", "NR." )
-    print(separator)
+    print(SEPARATOR)
     for key, value in chart_data:
         print(str(key).rjust(3), "|", len(value) * "*", "|".rjust(max_len_value + 1 - len(value)), len(value))
-    print(separator)
+    print(SEPARATOR)
 
-def main(text_number):
-    print(f"There are {count_words(text_number)} words in the selected text.")
-    print(f"There are {count_titlecase_words(text_number)} titlecase words.")
-    print(f"There are {count_uppercase_words(text_number)} uppercase words.")
-    print(f"There are {count_lowercase_words(text_number)} lowercase words.")
-    print(f"There are {count_and_sum_numeric_strings(text_number)[0]} numeric strings.")
-    print(f"The sum of all the numbers {count_and_sum_numeric_strings(text_number)[1]}.")   
-    make_chart()
+registered_users = {
+    "bob": "123",
+    "ann": "pass123",
+    "mike": "password123",
+    "lizz": "pass123"
+    }
+username = input("username: ").lower()
+password = input("password: ").lower()
     
 if username in registered_users.keys() and password in registered_users[username]:
-    print(separator)
-    print(f"Welcome to the app, {username} {new_line}We have 3 text to be analyzed.")
-    print(separator)
+    print(SEPARATOR)
+    print(f"Welcome to the app, {username}\nWe have 3 text to be analyzed.")
+    print(SEPARATOR)
     text_number = input("Enter a number btw. 1 and 3 to select: ")
-    print(separator)
+    print(SEPARATOR)
     if not text_number.isdigit() or int(text_number) > 3 or int(text_number) <= 0:
         print("given input is not correct, terminating the program...")
         exit()
     else:
-        main(text_number)
+        titlecase_words, uppercase_words, lowercase_words = analyze_text(text_number)
+        numeric_strings, sum_numeric_strings = count_and_sum_numeric_strings(text_number)
+        print(f"There are {count_words(text_number)} words in the selected text.")
+        print(f"There are {titlecase_words} titlecase words.")
+        print(f"There are {uppercase_words} uppercase words.")
+        print(f"There are {lowercase_words} lowercase words.")
+        print(f"There are {numeric_strings} numeric strings.")
+        print(f"The sum of all the numbers {sum_numeric_strings}.")   
+        make_chart(text_number)
 else:
     print("unregistered user, terminating the program...")
     exit()
